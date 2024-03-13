@@ -1,1 +1,0 @@
-list (APPEND CC_TOOLS_QT_DEPENDS comms)

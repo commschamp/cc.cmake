@@ -1,10 +1,6 @@
 function (cc_add_project name)
     string(TOUPPER "${name}" cap_name)
-
-    set (proj_file ${PROJECT_SOURCE_DIR}/proj/${name}.cmake)
-    if (EXISTS ${proj_file})
-        include (${proj_file})
-    endif ()
+    string(REPLACE "." "_" cap_name "${cap_name}")
 
     set (source_dir_param)
     set (source_dir_var "${cap_name}_SOURCE_DIR")
@@ -25,7 +21,7 @@ function (cc_add_project name)
     set (git_tag_param)
     set (git_tag_var "${cap_name}_GIT_TAG")
     if ("${${git_tag_var}}" STREQUAL "")
-        set (${git_tag_var} "master")
+        set (${git_tag_var} "${${cap_name}_DEFAULT_TAG}")
     endif ()    
 
     if (NOT "${git_repo_param}" STREQUAL "")
