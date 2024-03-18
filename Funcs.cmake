@@ -43,6 +43,7 @@ function (cc_add_project name)
     ExternalProject_Add(
         ${name}
         ${source_dir_param}
+        BINARY_DIR ${PROJECT_BINARY_DIR}/${name}
         ${git_repo_param}
         ${git_tag_param}
         GIT_PROGRESS TRUE

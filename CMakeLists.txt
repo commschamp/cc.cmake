@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.15)
-project ("cc_bundle")
+project ("cc_cmake")
 
 # Use CMAKE_PROJECT_INCLUDE variable to include file with proper configurations
 option (OPT_COMMS "Forcefully add COMMS library" OFF)
@@ -49,3 +49,8 @@ cc_add_project (cc.mqtt5_protocol.cc_tools_plugin)
 cc_add_project (cc.mqttsn_protocol.cc_tools_plugin)
 cc_add_project (cc.ublox_protocol.cc_tools_plugin)
 cc_add_project (cc.mqtt5_client_filter.cc_tools_plugin)
+
+if (WIN32 AND OPT_CC_TOOLS_QT)
+    add_custom_target ("deploy_qt"
+        COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR}/cc_tools_qt --target deploy_qt)    
+endif ()
