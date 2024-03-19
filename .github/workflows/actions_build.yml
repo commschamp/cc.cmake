@@ -31,7 +31,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
-          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=config/All.cmake -OPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -79,7 +79,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
-          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=config/All.cmake -OPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
