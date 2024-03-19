@@ -40,9 +40,13 @@ function (cc_add_project name)
         set (exclude_from_all FALSE)
     endif ()
 
+    set (combined_prefix_path ${CMAKE_PREFIX_PATH} ${CMAKE_INSTALL_PREFIX})
+    string (REPLACE ";" "|" combined_prefix_path "${combined_prefix_path}")
+
     ExternalProject_Add(
         ${name}
         ${source_dir_param}
+        SOURCE_DIR ${PROJECT_SOURCE_DIR}/externals/${name}
         BINARY_DIR ${PROJECT_BINARY_DIR}/${name}
         ${git_repo_param}
         ${git_tag_param}
@@ -52,8 +56,9 @@ function (cc_add_project name)
         CMAKE_GENERATOR_TOOLSET ${CMAKE_GENERATOR_TOOLSET}
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${combined_prefix_path}
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
             ${${cap_name}_CMAKE_ARGS}
         LIST_SEPARATOR |             
         ${dep_param}

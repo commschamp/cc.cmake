@@ -23,6 +23,13 @@ option (OPT_CC_MQTT5_PROTOCOL_CC_TOOLS_PLUGIN "Forcefully add cc.mqtt5_protocol.
 option (OPT_CC_MQTTSN_PROTOCOL_CC_TOOLS_PLUGIN "Forcefully add cc.mqttsn_protocol.cc_tools_plugin" OFF)
 option (OPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN "Forcefully add cc.ublox_protocol.cc_tools_plugin" OFF)
 option (OPT_CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN "Forcefully add cc.mqtt5_client_filter.cc_tools_plugin" OFF)
+option (OPT_ALLOW_BOOST "Build applications requiring boost if the latter is found" ON)
+
+# Other configuration variables
+# OPT_QT_MAJOR_VERSION - Major Qt version, required by various projects. Defaults to 5.
+# CMAKE_CXX_VERSION - C++ version to use. Defaults to 17.
+
+################################################################################################
 
 include(ExternalProject)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Funcs.cmake)

@@ -20,6 +20,9 @@ set (CC_MQTT5_PROTOCOL_CC_TOOLS_PLUGIN_DEFAULT_TAG "${CC_MQTT5_GENERATED_DEFAULT
 set (CC_MQTTSN_PROTOCOL_CC_TOOLS_PLUGIN_DEFAULT_TAG "${CC_MQTTSN_GENERATED_DEFAULT_TAG}")
 set (CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN_DEFAULT_TAG "${CC_UBLOX_GENERATED_DEFAULT_TAG}")
 set (CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN_DEFAULT_TAG "v0.2")
+set (QT_MAJOR_DEFAULT_VERSION 5)
+
+########################################################################
 
 # Dependencies
 list (APPEND CC_TOOLS_QT_DEPENDS comms)
@@ -42,37 +45,69 @@ list (APPEND CC_MQTTSN_PROTOCOL_CC_TOOLS_PLUGIN_DEPENDS cc.mqttsn.generated cc_t
 list (APPEND CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN_DEPENDS cc.ublox.generated cc_tools_qt)
 list (APPEND CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN_DEPENDS cc.mqtt5.libs cc_tools_qt)
 
+########################################################################
+
 # Extra flags
 if (OPT_CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN)
     # cc.mqtt5.libs requires PIC compilation when linked to the shared module.
     list (APPEND CC_MQTT5_LIBS_CMAKE_ARGS -DCC_MQTT5_CLIENT_LIB_FORCE_PIC=ON)
 endif ()
 
+########################################################################
+
+# Boost configuration
 set (boost_enabled OFF)
 set (boost_params)
 
 macro (add_boost_param name)
-    if (name)
+    if (DEFINED ${name})
         list (APPEND boost_params -D${name}=${${name}}) 
     endif ()
 endmacro ()
 
-find_package (Boost QUIET)
-if (TARGET Boost::boost)
-    set (boost_enabled ON)
-    add_boost_param(BOOST_ROOT)
-    add_boost_param(BOOST_INCLUDEDIR)
-    add_boost_param(BOOST_LIBRARYDIR)
-    add_boost_param(Boost_NO_SYSTEM_PATHS)
-    add_boost_param(Boost_ADDITIONAL_VERSIONS)
-    add_boost_param(Boost_USE_DEBUG_LIBS)
-    add_boost_param(Boost_USE_RELEASE_LIBS)
-    add_boost_param(Boost_USE_MULTITHREADED)
-    add_boost_param(Boost_USE_STATIC_LIBS)
-    add_boost_param(Boost_USE_STATIC_RUNTIME)
-    add_boost_param(Boost_LIB_PREFIX)
+if (OPT_ALLOW_BOOST)
+    find_package (Boost QUIET)
+    
+    if (TARGET Boost::boost)
+        set (boost_enabled ON)
+        add_boost_param(BOOST_ROOT)
+        add_boost_param(BOOST_INCLUDEDIR)
+        add_boost_param(BOOST_LIBRARYDIR)
+        add_boost_param(Boost_NO_SYSTEM_PATHS)
+        add_boost_param(Boost_ADDITIONAL_VERSIONS)
+        add_boost_param(Boost_USE_DEBUG_LIBS)
+        add_boost_param(Boost_USE_RELEASE_LIBS)
+        add_boost_param(Boost_USE_MULTITHREADED)
+        add_boost_param(Boost_USE_STATIC_LIBS)
+        add_boost_param(Boost_USE_STATIC_RUNTIME)
+        add_boost_param(Boost_LIB_PREFIX)
 
-    list (APPEND CC_MQTT5_LIBS_CMAKE_ARGS ${boost_params})
+        list (APPEND CC_MQTT5_LIBS_CMAKE_ARGS ${boost_params})
+    endif ()
 endif ()
 
 list (APPEND CC_MQTT5_LIBS_CMAKE_ARGS -DCC_MQTT5_CLIENT_APPS=${boost_enabled})
+
+########################################################################
+
+# Qt configuration
+if ("${OPT_QT_MAJOR_VERSION}" STREQUAL "")
+    set (OPT_QT_MAJOR_VERSION ${QT_MAJOR_DEFAULT_VERSION})
+endif ()
+
+list (APPEND CC_TOOLS_QT_CMAKE_ARGS -DCC_TOOLS_QT_MAJOR_QT_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_DEMO1_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_DEMO2_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_DEMO3_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_MQTT311_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_MQTT5_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_MQTTSN_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_QT_MAJOR_VERSION=${OPT_QT_MAJOR_VERSION})
+list (APPEND CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN_CMAKE_ARGS -DOPT_MAJOR_QT_VERSION=${OPT_QT_MAJOR_VERSION})
+
+########################################################################
+
+# C++ standard
+if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
+    set (CMAKE_CXX_STANDARD 17)
+endif ()
