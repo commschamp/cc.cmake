@@ -41,7 +41,7 @@ replaced with the `_` (underscore). For example:
   becomes `CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN`
 
 
-For example to enable the MQTT5 client library
+For example, to enable the MQTT5 client library
 (see [cc.mqtt5.libs](https://github.com/commschamp/cc.mqtt5.libs))
 while disabling build of provided client applications, the
 configuration file can have the following lines:
@@ -68,9 +68,12 @@ cmake -DCMAKE_PROJECT_INCLUDE=config/All.cmake ...
 
 ## Qt Dependency
 Some projects (mostly [cc_tools_qt](https://github.com/commschamp/cc_tools_qt) and the relevant plugins) depend
-on the Qt library. To provide a path to the compiled libraries (required mostly on Windows platform) use
+on the [Qt](https://www.qt.io/) library. To provide a path to the compiled libraries (required mostly on Windows platform) use
 standard [CMAKE_PREFIX_PATH](https://cmake.org/cmake/help/v3.15/variable/CMAKE_PREFIX_PATH.html) variable
 passed to this project. It will be propagated to all other projects.
+```
+cmake -DCMAKE_PREFIX_PATH=C:\Qt6 ...
+```
 
 All the projects in the [CommsChampion Ecosystem](https://commschamp.github.io/) are expected
 to support both Qt5 and Qt6. To overwrite the default Qt major version (currently Qt5) use the
@@ -82,7 +85,7 @@ cmake -DOPT_QT_MAJOR_VERSION=6 ...
 ## Boost Dependency
 Some projects (mostly command line applications in the libraries projects) depend on [Boost](https://www.boost.org/).
 It is expected to use the relevant variables described in the [FindBoost](https://cmake.org/cmake/help/v3.15/module/FindBoost.html)
-documentation to help with finding appropriate boost libraries. All the passed boost configuration variables will be passed
+documentation to help with finding appropriate boost libraries. All the provided boost configuration variables will be passed
 to the relevant projects as well.
 ```
 cmake -DBOOST_ROOT=C:\boost -DBoost_USE_STATIC_LIBS=ON ...

@@ -59,6 +59,7 @@ function (cc_add_project name)
             -DCMAKE_PREFIX_PATH=${combined_prefix_path}
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+            ${${cap_name}_DEFAULT_CMAKE_ARGS}
             ${${cap_name}_CMAKE_ARGS}
         LIST_SEPARATOR |             
         ${dep_param}
