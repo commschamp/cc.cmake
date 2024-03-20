@@ -47,7 +47,8 @@ build_script:
         -DCMAKE_INSTALL_PREFIX="%BUILD_DIR%\install" ^
         -DCMAKE_PREFIX_PATH="%QTDIR%" -DCMAKE_CXX_STANDARD=%CPP_STD% ^
         -DBOOST_ROOT="%BOOST_DIR%" -DBoost_USE_STATIC_LIBS=ON ^
-        -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=%QT_MAJOR%
+        -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=%QT_MAJOR% ^
+        -DOPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN=OFF
     - cmake --build . --config %CONFIGURATION% 
     - echo -------------------------- Deploying Qt ---------------------------
     - cmake --build . --config %CONFIGURATION% --target deploy_qt
