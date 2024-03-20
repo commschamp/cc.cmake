@@ -58,6 +58,12 @@ contain a CMake list, then the separation of the values needs to be performed us
 list (APPEND CC_MQTT5_LIBS_CMAKE_ARGS -DCC_MQTT5_CUSTOM_CLIENT_CONFIG_FILES="/path/to/config1|/path/to/config2")
 ```
 
+This project contains various configuration files for use and reference, please
+see the contents of the [config](config) folder.
+```
+cmake -DCMAKE_PROJECT_INCLUDE=config/All.cmake ...
+```
+
 # Third Party Dependencies
 
 ## Qt Dependency
