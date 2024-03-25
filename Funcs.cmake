@@ -2,10 +2,10 @@ function (cc_add_project name)
     string(TOUPPER "${name}" cap_name)
     string(REPLACE "." "_" cap_name "${cap_name}")
 
-    set (source_dir_param)
+    set (source_dir ${OPT_EXTERNALS_DIR}/${name})
     set (source_dir_var "${cap_name}_SOURCE_DIR")
     if (NOT "${${source_dir_var}}" STREQUAL "")
-        set (source_dir_param SOURCE_DIR ${${source_dir_var}})
+        set (source_dir ${${source_dir_var}})
     endif ()
 
     set (git_repo_param)
@@ -45,8 +45,7 @@ function (cc_add_project name)
 
     ExternalProject_Add(
         ${name}
-        ${source_dir_param}
-        SOURCE_DIR ${PROJECT_SOURCE_DIR}/externals/${name}
+        SOURCE_DIR ${source_dir}
         BINARY_DIR ${PROJECT_BINARY_DIR}/${name}
         ${git_repo_param}
         ${git_tag_param}
