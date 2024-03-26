@@ -27,9 +27,14 @@ option (OPT_ALLOW_BOOST "Build applications requiring boost if the latter is fou
 
 # Other configuration variables
 # OPT_QT_MAJOR_VERSION - Major Qt version, required by various projects. Defaults to 5.
+# OPT_EXTERNALS_DIR - Directory where accumulate externals. Defaults to ${PROJECT_SOURCE_DIR}/externals
 # CMAKE_CXX_VERSION - C++ version to use. Defaults to 17.
 
 ################################################################################################
+
+if ("${OPT_EXTERNALS_DIR}" STREQUAL "")
+    set (OPT_EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
+endif ()    
 
 include(ExternalProject)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Funcs.cmake)
