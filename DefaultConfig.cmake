@@ -100,6 +100,7 @@ if (OPT_ALLOW_BOOST)
 
         list (APPEND CC_MQTT311_LIBS_DEFAULT_CMAKE_ARGS ${boost_params})
         list (APPEND CC_MQTT5_LIBS_DEFAULT_CMAKE_ARGS ${boost_params})
+        list (APPEND CC_MQTTSN_LIBS_DEFAULT_CMAKE_ARGS ${boost_params})
     endif ()
 endif ()
 
