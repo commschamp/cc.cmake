@@ -106,6 +106,7 @@ endif ()
 
 list (APPEND CC_MQTT311_LIBS_DEFAULT_CMAKE_ARGS -DCC_MQTT311_CLIENT_APPS=${boost_enabled})
 list (APPEND CC_MQTT5_LIBS_DEFAULT_CMAKE_ARGS -DCC_MQTT5_CLIENT_APPS=${boost_enabled})
+list (APPEND CC_MQTTSN_LIBS_DEFAULT_CMAKE_ARGS -DCC_MQTTSN_CLIENT_APPS=${boost_enabled} -DCC_MQTTSN_GATEWAY_APPS=${boost_enabled})
 
 ########################################################################
 
