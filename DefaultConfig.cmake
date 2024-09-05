@@ -97,6 +97,7 @@ if (OPT_ALLOW_BOOST)
         add_boost_param(Boost_USE_STATIC_LIBS)
         add_boost_param(Boost_USE_STATIC_RUNTIME)
         add_boost_param(Boost_LIB_PREFIX)
+        add_boost_param(CMAKE_POLICY_DEFAULT_CMP0167)
 
         list (APPEND CC_MQTT311_LIBS_DEFAULT_CMAKE_ARGS ${boost_params})
         list (APPEND CC_MQTT5_LIBS_DEFAULT_CMAKE_ARGS ${boost_params})

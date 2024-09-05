@@ -131,7 +131,7 @@ jobs:
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
           -DCMAKE_PREFIX_PATH="${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
-          -DBoost_USE_STATIC_LIBS=ON ^
+          -DCMAKE_POLICY_DEFAULT_CMP0167=OLD -DBoost_USE_STATIC_LIBS=ON ^
           -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}} ^
           -DOPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN=OFF
       env:
