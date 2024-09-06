@@ -65,6 +65,7 @@ cc_add_project (cc.mqttsn_protocol.cc_tools_plugin)
 cc_add_project (cc.ublox_protocol.cc_tools_plugin)
 cc_add_project (cc.mqtt311_client_filter.cc_tools_plugin)
 cc_add_project (cc.mqtt5_client_filter.cc_tools_plugin)
+cc_add_project (cc.mqttsn_client_filter.cc_tools_plugin)
 
 if (WIN32 AND OPT_CC_TOOLS_QT)
     add_custom_target ("deploy_qt"
