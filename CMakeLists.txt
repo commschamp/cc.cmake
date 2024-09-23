@@ -27,6 +27,7 @@ option (OPT_CC_MQTT311_CLIENT_FILTER_CC_TOOLS_PLUGIN "Forcefully add cc.mqtt311_
 option (OPT_CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN "Forcefully add cc.mqtt5_client_filter.cc_tools_plugin" OFF)
 option (OPT_ALLOW_BOOST "Build applications requiring boost if the latter is found" ON)
 option (OPT_USE_CCACHE "Use ccache" OFF)
+option (OPT_WITH_DEFAULT_SANITIZERS "Build with sanitizers" OFF)
 
 # Other configuration variables
 # OPT_QT_MAJOR_VERSION - Major Qt version, required by various projects. Defaults to 5.
