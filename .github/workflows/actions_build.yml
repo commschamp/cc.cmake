@@ -3,7 +3,7 @@ name: Github Actions Build
 on: [push]
 
 env:
-  CC_CMAKE_CONFIG: config/AllDevelop.cmake
+  CC_CMAKE_CONFIG: config/All.cmake
 
 jobs:
 
