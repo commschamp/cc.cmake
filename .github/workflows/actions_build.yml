@@ -2,6 +2,8 @@ name: Github Actions Build
 
 on:
   push:
+    branches:
+      - '**'
     tags-ignore:
       - '**'
 
