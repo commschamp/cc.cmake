@@ -1,6 +1,9 @@
 name: Github Actions Build
 
-on: [push]
+on:
+  push:
+    tags-ignore:
+      - '**'
 
 env:
   CC_CMAKE_CONFIG: config/All.cmake
