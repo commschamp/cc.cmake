@@ -1,6 +1,14 @@
 name: Github Actions Build
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+
+env:
+  CC_CMAKE_CONFIG: config/All.cmake
 
 jobs:
 
@@ -31,7 +39,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
-          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -42,6 +50,48 @@ jobs:
       run: cmake --build . --config ${{matrix.type}}
       env:
         VERBOSE: 1         
+
+  build_gcc_ubuntu_24_04:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [Debug, Release, MinSizeRel]
+        cc_ver: [13, 14]
+        cpp: [17, 20, 23]
+        qt_ver: [5, 6]
+        exclude:
+          - cc_ver: 13
+            cpp: 23  
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Prepare Install
+      run: sudo apt-get update --fix-missing    
+      
+    - name: Install Packages
+      run: sudo apt install qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build      
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
+      env:
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
+
+    - name: Build Target 
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{matrix.type}}
+      env:
+        VERBOSE: 1 
       
   build_clang_ubuntu_22_04:
     runs-on: ubuntu-22.04
@@ -79,7 +129,51 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
-          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
+      env:
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
+
+    - name: Build Target 
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{matrix.type}}
+      env:
+        VERBOSE: 1 
+
+  build_clang_ubuntu_24_04:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [Debug, Release, MinSizeRel]
+        cc_ver: [16, 17, 18]
+        cpp: [17, 20, 23]
+        qt_ver: [5, 6]
+        exclude:
+          - cc_ver: 16
+            cpp: 23
+          - cc_ver: 17
+            cpp: 23     
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Prepare Install
+      run: sudo apt-get update --fix-missing    
+      
+    - name: Install Packages
+      run: sudo apt install qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev clang-${{matrix.cc_ver}}
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build      
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}}
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
@@ -110,7 +204,7 @@ jobs:
     - name: Install Boost
       shell: cmd
       run: |
-        choco install boost-msvc-14.2
+        choco install boost-msvc-14.2 --version=1.85.0
 
     - name: Install Curl
       shell: cmd
@@ -132,7 +226,7 @@ jobs:
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
           -DCMAKE_PREFIX_PATH="${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
           -DCMAKE_POLICY_DEFAULT_CMP0167=OLD -DBoost_USE_STATIC_LIBS=ON ^
-          -DCMAKE_PROJECT_INCLUDE=config/All.cmake -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}} ^
+          -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}} ^
           -DOPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN=OFF
       env:
         QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
