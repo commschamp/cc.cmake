@@ -89,6 +89,13 @@ list (APPEND CC_MQTTSN_CLIENT_FILTER_CC_TOOLS_PLUGIN_DEFAULT_CMAKE_ARGS -DOPT_WI
 
 ########################################################################
 
+# Shared libs flags
+list (APPEND CC_MQTT311_LIBS_DEFAULT_CMAKE_ARGS -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS})
+list (APPEND CC_MQTT5_LIBS_DEFAULT_CMAKE_ARGS -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS})
+list (APPEND CC_MQTTSN_LIBS_DEFAULT_CMAKE_ARGS -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS})
+
+########################################################################
+
 # Extra flags
 if (OPT_CC_MQTT311_CLIENT_FILTER_CC_TOOLS_PLUGIN)
     # cc.mqtt311.libs requires PIC compilation when linked to the shared module.
