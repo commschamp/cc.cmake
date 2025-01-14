@@ -84,9 +84,16 @@ cmake -DOPT_QT_MAJOR_VERSION=6 ...
 
 ## Boost Dependency
 Some projects (mostly command line applications in the libraries projects) depend on [Boost](https://www.boost.org/).
-It is expected to use the relevant variables described in the [FindBoost](https://cmake.org/cmake/help/v3.15/module/FindBoost.html)
+It is expected to use the relevant variables described in the [FindBoost](https://cmake.org/cmake/help/latest/module/FindBoost.html)
 documentation to help with finding appropriate boost libraries. All the provided boost configuration variables will be passed
 to the relevant projects as well.
+
+For example using CMake built-in scripts to find boost
 ```
-cmake -DBOOST_ROOT=C:\boost -DBoost_USE_STATIC_LIBS=ON ...
+cmake -DCMAKE_POLICY_DEFAULT_CMP0167=OLD -DBOOST_ROOT=C:\boost -DBoost_USE_STATIC_LIBS=ON ...
+```
+
+Or using upstream boost configuration:
+```
+cmake -DCMAKE_POLICY_DEFAULT_CMP0167=NEW -DCMAKE_PREFIX_PATH=/path/to/boost/cmake/config ...
 ```
