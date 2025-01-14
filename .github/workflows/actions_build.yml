@@ -9,6 +9,8 @@ on:
 
 env:
   CC_CMAKE_CONFIG: config/All.cmake
+  WIN_BOOST_VERSION: "1.87.0"
+  WIN_BOOST_DIR: "C:/local/boost_1_87_0"  
 
 jobs:
 
@@ -190,7 +192,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        type: [Debug, Release, MinSizeRel]
+        type: [Debug, Release]
         arch: [x64]
         cpp: [17]
         qt_ver: [5, 6]
@@ -204,7 +206,8 @@ jobs:
     - name: Install Boost
       shell: cmd
       run: |
-        choco install boost-msvc-14.2 --version=1.85.0
+        choco install boost-msvc-14.2 --version=${{env.WIN_BOOST_VERSION}}      
+        echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.2/cmake >>%GITHUB_ENV%    
 
     - name: Install Curl
       shell: cmd
@@ -224,8 +227,8 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
-          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
-          -DCMAKE_POLICY_DEFAULT_CMP0167=OLD -DBoost_USE_STATIC_LIBS=ON ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64;%BOOST_DIR%" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
+          -DCMAKE_POLICY_DEFAULT_CMP0167=NEW ^
           -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}} ^
           -DOPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN=OFF
       env:
