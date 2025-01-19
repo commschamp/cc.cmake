@@ -26,7 +26,7 @@ if [ -z "${USE_CCACHE}" ]; then
 fi
 
 if [ -z "${DEFAULT_SANITIZERS}" ]; then
-    export DEFAULT_SANITIZERS=ON
+    export DEFAULT_SANITIZERS=OFF
 fi
 
 if [ -z "${QT_VER}" ]; then

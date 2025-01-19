@@ -29,6 +29,9 @@ option (OPT_ALLOW_BOOST "Build applications requiring boost if the latter is fou
 option (OPT_USE_CCACHE "Use ccache" OFF)
 option (OPT_WITH_DEFAULT_SANITIZERS "Build with sanitizers" OFF)
 
+# CMake built-in options
+option (BUILD_SHARED_LIBS "Build as shared libraries (applicable to selected projects)" OFF)
+
 # Other configuration variables
 # OPT_QT_MAJOR_VERSION - Major Qt version, required by various projects. Defaults to 5.
 # OPT_EXTERNALS_DIR - Directory where accumulate externals. Defaults to ${PROJECT_SOURCE_DIR}/externals
