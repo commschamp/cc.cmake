@@ -154,6 +154,22 @@ list (APPEND CC_MQTTSN_LIBS_DEFAULT_CMAKE_ARGS -DCC_MQTTSN_CLIENT_APPS=${boost_e
 
 ########################################################################
 
+# OpenSSL configuration
+set (openssl_enabled OFF)
+
+if (OPT_ALLOW_OPENSSL)
+    find_package (OpenSSL QUIET)
+    
+    if (TARGET OpenSSL::SSL)
+        set (openssl_enabled ON)
+    endif ()
+endif ()
+
+list (APPEND CC_MQTT311_LIBS_DEFAULT_CMAKE_ARGS -DCC_MQTT311_CLIENT_APPS_WITH_OPENSSL=${openssl_enabled})
+list (APPEND CC_MQTT5_LIBS_DEFAULT_CMAKE_ARGS -DCC_MQTT5_CLIENT_APPS_WITH_OPENSSL=${openssl_enabled})
+
+########################################################################
+
 # Qt configuration
 if ("${OPT_QT_MAJOR_VERSION}" STREQUAL "")
     set (OPT_QT_MAJOR_VERSION ${QT_MAJOR_DEFAULT_VERSION})

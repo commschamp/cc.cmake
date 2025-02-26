@@ -25,7 +25,8 @@ option (OPT_CC_MQTTSN_PROTOCOL_CC_TOOLS_PLUGIN "Forcefully add cc.mqttsn_protoco
 option (OPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN "Forcefully add cc.ublox_protocol.cc_tools_plugin" OFF)
 option (OPT_CC_MQTT311_CLIENT_FILTER_CC_TOOLS_PLUGIN "Forcefully add cc.mqtt311_client_filter.cc_tools_plugin" OFF)
 option (OPT_CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN "Forcefully add cc.mqtt5_client_filter.cc_tools_plugin" OFF)
-option (OPT_ALLOW_BOOST "Build applications requiring boost if the latter is found" ON)
+option (OPT_ALLOW_BOOST "Build applications requiring Boost if the latter is found" ON)
+option (OPT_ALLOW_OPENSSL "Build applications requiring OpenSSL if the latter is found" ON)
 option (OPT_USE_CCACHE "Use ccache" OFF)
 option (OPT_WITH_DEFAULT_SANITIZERS "Build with sanitizers" OFF)
 
