@@ -169,3 +169,13 @@ docker build --progress=plain \
     -t cc_tools -f docker/Dockerfile .
 ```
 See also [script/docker_build_tools.sh](script/docker_build_tools.sh)
+
+## MQTT Applications Only Image
+
+```
+docker build --progress=plain \
+    --build-arg CONFIG=config/AllMqtt.cmake \
+    --build-arg HAS_GUI_APPS=false \
+    --build-arg HAS_CODE_GENERATORS=false \
+    -t cc_mqtt -f docker/Dockerfile .
+```
