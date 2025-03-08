@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=cc
+Comment=CommsChampion Ecosystem Entry Point
+Exec=cc.sh
+Icon=app_icon.png
+Terminal=true
+Type=Application
+Categories=Utility;Development;
