@@ -1,7 +1,7 @@
 # Stage 1: Build
 FROM debian:bookworm AS builder
 
-ARG CONFIG=config/All.cmake
+ARG CONFIG=config/AllDocker.cmake
 ARG HAS_GUI_APPS=true
 ARG HAS_BOOST_APPS=true
 ARG HAS_CODE_GENERATORS=true

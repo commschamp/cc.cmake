@@ -103,7 +103,7 @@ cmake -DCMAKE_POLICY_DEFAULT_CMP0167=NEW -DCMAKE_PREFIX_PATH=/path/to/boost/cmak
 
 # Docker Support
 
-The proficed [Dockerfile](docker/Dockerfile) can be used to build any configuration. When no extra build arguments
+The provided [Dockerfile](docker/Dockerfile) can be used to build any configuration. When no extra build arguments
 are provided all [CommsChampion Ecosystem](https://commschamp.github.io/) applications will end up
 in the final image. 
 
@@ -119,7 +119,7 @@ options for help.
 
 Below are the build configuration arguments default value of whic that can be changed with `--build-arg`.
 
-- **CONFIG** (=config/All.cmake) - Path to the configuration to be used with the 
+- **CONFIG** (=config/AllDocker.cmake) - Path to the configuration to be used with the 
   [CMAKE_PROJECT_INCLUDE](https://cmake.org/cmake/help/latest/variable/CMAKE_PROJECT_INCLUDE.html) cmake parameter.
 - **HAS_GUI_APPS** (=true) - Flag to install relevant Qt libraries for the GUI applications.
 - **HAS_BOOST_APPS** (=true) - Flag to install relevant Boost libraries for command line applications.
