@@ -46,6 +46,7 @@ for b in ${CC_DIR}/bin/*; do
     PARAMS="${PARAMS} -e ${CC_DIR}/bin/$(basename $b)"
 done
 
+# Add qt plugin of Qt based apps are present
 if [ -e ${CC_DIR}/bin/cc_view ]; then
     PARAMS="${PARAMS} --plugin qt"
 fi

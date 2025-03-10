@@ -11,12 +11,18 @@ if [ -z "${CC}" ]; then
 fi
 
 if [ -z "${CXX}" ]; then
-    export CXX=gcc
+    export CXX=g++
 fi
 
-export BUILD_TYPE=Release
+if [ -z "${BUILD_TYPE}" ]; then
+    export BUILD_TYPE="Release"    
+fi
+
+if [ -z "${BUILD_DIR}" ]; then
+    export BUILD_DIR="${ROOT_DIR}/build.appimage.${CC}.${BUILD_TYPE}"    
+fi
+
 export DEFAULT_SANITIZERS=OFF
-export BUILD_DIR="${ROOT_DIR}/build.appimage.${CC}"
 
 set -e
 ${SCRIPT_DIR}/full_build.sh "$@"
