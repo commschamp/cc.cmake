@@ -32,6 +32,7 @@ fi
 
 set -e
 CC_DIR="${APPDIR_DIR}/cc"
+rm -rf ${APPDIR_DIR}
 mkdir -p ${APPDIR_DIR}/usr/lib
 rm -rf ${CC_DIR}
 cp -r ${INSTALL_DIR} ${CC_DIR}

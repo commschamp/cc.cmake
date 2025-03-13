@@ -3,16 +3,15 @@
 ROOT_DIR=$(dirname $(realpath $0))
 
 function usage {
-    echo "Usage: ${0} <cmd> <options...>"
+    echo "Usage: /path/to/cc/AppImage <cmd> <options...>"
     echo
-    ls -al "${ROOT_DIR}/*"
     echo "Available cmds:"
     for f in ${ROOT_DIR}/cc/bin/*; do
         cmd=$(basename ${f})
         echo "    ${cmd}"
     done
     echo 
-    echo "Use \"${0} <cmd> -h\" to inquire about command options"
+    echo "Use \"/path/to/cc/AppImage <cmd> -h\" to inquire about command options"
 }
 
 CMD=${1}
