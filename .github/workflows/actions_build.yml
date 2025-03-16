@@ -11,6 +11,7 @@ env:
   CC_CMAKE_CONFIG: config/All.cmake
   WIN_BOOST_VERSION: "1.87.0"
   WIN_BOOST_DIR: "C:/local/boost_1_87_0"  
+  WIN_OPENSSL_VERSION: "3.4.1"    
 
 jobs:
 
@@ -31,7 +32,7 @@ jobs:
       run: sudo apt-get update --fix-missing    
       
     - name: Install Packages
-      run: sudo apt install qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
+      run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build      
@@ -73,7 +74,7 @@ jobs:
       run: sudo apt-get update --fix-missing    
       
     - name: Install Packages
-      run: sudo apt install qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
+      run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build      
@@ -121,7 +122,7 @@ jobs:
       run: sudo apt-get update --fix-missing    
       
     - name: Install Packages
-      run: sudo apt install qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev clang-${{matrix.cc_ver}}
+      run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev clang-${{matrix.cc_ver}}
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build      
@@ -165,7 +166,7 @@ jobs:
       run: sudo apt-get update --fix-missing    
       
     - name: Install Packages
-      run: sudo apt install qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev clang-${{matrix.cc_ver}}
+      run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev clang-${{matrix.cc_ver}}
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build      
@@ -208,6 +209,12 @@ jobs:
       run: |
         choco install boost-msvc-14.2 --version=${{env.WIN_BOOST_VERSION}}      
         echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.2/cmake >>%GITHUB_ENV%    
+
+    - name: Install OpenSSL
+      if: matrix.arch == 'x64'
+      shell: cmd
+      run: |
+        choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}              
 
     - name: Install Curl
       shell: cmd

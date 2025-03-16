@@ -1,0 +1,33 @@
+#!/bin/bash
+
+ROOT_DIR=$(dirname $(realpath $0))
+
+function usage {
+    echo "Usage: /path/to/cc/AppImage <cmd> <options...>"
+    echo
+    echo "Available cmds:"
+    for f in ${ROOT_DIR}/cc/bin/*; do
+        cmd=$(basename ${f})
+        echo "    ${cmd}"
+    done
+    echo 
+    echo "Use \"/path/to/cc/AppImage <cmd> -h\" to inquire about command options"
+}
+
+CMD=${1}
+if [ -z "${CMD}" ]; then
+    usage
+    exit 0
+fi
+
+APP="${ROOT_DIR}/cc/bin/${CMD}"
+if [ ! -e "${APP}" ]; then
+    echo "ERROR: Command ${CMD} is not available"
+    usage
+    exit 1
+fi
+
+shift
+
+export LD_LIBRARY_PATH=${ROOT_DIR}/cc/lib:${LD_LIBRARY_PATH}
+exec ${APP} "$@"

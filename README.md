@@ -1,11 +1,17 @@
 # Overview
 This repository bundles all the [CommsChampion Ecosystem](https://commschamp.github.io/) projects
-into a single CMake one. It is expected to be used in another CMake project that has some
+into a single CMake one. It is expected to be built a stand-alone CMake project or in another CMake one that has some
 [CommsChampion Ecosystem](https://commschamp.github.io/) dependencies and built using
 the [ExternalProject_Add()](https://cmake.org/cmake/help/v3.15/module/ExternalProject.html) cmake
 function with an appropriate configuration.
 
-# CMake Configuration
+Support for the [Docker](https://www.docker.com/) containers is also available, see instructions [below](#docker-support)
+
+Support for the [AppImage](https://appimage.org/) is also available, see instructions [below](#appimage-support)
+
+# Build Instructions
+
+## CMake Configuration
 The major [CMakeLists.txt](CMakeLists.txt) contains a list of supported options and other
 configuration variables. All the projects are disabled by default. The CMake invocation is
 expected to use [CMAKE_PROJECT_INCLUDE](https://cmake.org/cmake/help/v3.15/variable/CMAKE_PROJECT_INCLUDE.html)
@@ -40,7 +46,6 @@ replaced with the `_` (underscore). For example:
 - [cc.mqtt5_client_filter.cc_tools_plugin](https://github.com/commschamp/cc.mqtt5_client_filter.cc_tools_plugin)
   becomes `CC_MQTT5_CLIENT_FILTER_CC_TOOLS_PLUGIN`
 
-
 For example, to enable the MQTT5 client library
 (see [cc.mqtt5.libs](https://github.com/commschamp/cc.mqtt5.libs))
 while disabling build of provided client applications, the
@@ -64,9 +69,9 @@ see the contents of the [config](config) folder.
 cmake -DCMAKE_PROJECT_INCLUDE=config/All.cmake ...
 ```
 
-# Third Party Dependencies
+## Third Party Dependencies
 
-## Qt Dependency
+### Qt Dependency
 Some projects (mostly [cc_tools_qt](https://github.com/commschamp/cc_tools_qt) and the relevant plugins) depend
 on the [Qt](https://www.qt.io/) library. To provide a path to the compiled libraries (required mostly on Windows platform) use
 standard [CMAKE_PREFIX_PATH](https://cmake.org/cmake/help/v3.15/variable/CMAKE_PREFIX_PATH.html) variable
@@ -82,7 +87,7 @@ to support both Qt5 and Qt6. To overwrite the default Qt major version (currentl
 cmake -DOPT_QT_MAJOR_VERSION=6 ...
 ```
 
-## Boost Dependency
+### Boost Dependency
 Some projects (mostly command line applications in the libraries projects) depend on [Boost](https://www.boost.org/).
 It is expected to use the relevant variables described in the [FindBoost](https://cmake.org/cmake/help/latest/module/FindBoost.html)
 documentation to help with finding appropriate boost libraries. All the provided boost configuration variables will be passed
@@ -97,3 +102,127 @@ Or using upstream boost configuration:
 ```
 cmake -DCMAKE_POLICY_DEFAULT_CMP0167=NEW -DCMAKE_PREFIX_PATH=/path/to/boost/cmake/config ...
 ```
+
+# Docker Support
+
+The provided [Dockerfile](docker/Dockerfile) can be used to build any configuration. When no extra build arguments
+are provided all [CommsChampion Ecosystem](https://commschamp.github.io/) applications will end up
+in the final image. 
+
+All the artifacts will reside in the `/cc` directory (the binary executables will be in `/cc/bin`) and the 
+[cc.sh](docker/cc.sh) script will be a default entrypoint. There is a user defined and all the applications
+are executed with the selected user permissions. The expected usage of the entrypoint is:
+```
+/cc.sh <cmd> <cmd_options...>
+``` 
+The `<cmd>` is the name of the binary from the `/cc/bin`. When no arguments are provided then the script
+will list all the available commands. Every binary in the `/cc/bin` is expected to have `-h` command line
+options for help.
+
+Below are the build configuration arguments, default value of which that can be changed with `--build-arg`.
+
+- **CONFIG** (=config/AllDocker.cmake) - Path to the configuration to be used with the 
+  [CMAKE_PROJECT_INCLUDE](https://cmake.org/cmake/help/latest/variable/CMAKE_PROJECT_INCLUDE.html) cmake parameter.
+- **HAS_GUI_APPS** (=true) - Flag to install relevant Qt libraries for the GUI applications.
+- **HAS_BOOST_APPS** (=true) - Flag to install relevant Boost libraries for command line applications.
+- **HAS_CODE_GENERATORS** (=true) - Flag to install dependencies of the [commsdsl](https://github.com/commschamp/commsdsl)
+  code generators.
+- **USERNAME** (=cc) - Username to be used for the non-root user.
+- **UID** (=1000) - User ID for the non-root user
+
+## All Applications Image
+
+```
+docker build --progress=plain -t cc -f docker/Dockerfile .
+```
+See also [script/docker_build.sh](script/docker_build.sh)
+
+When running the docker images remember to give access to the relevant host hardware / assets if needed. For example:
+
+- Run applications that requires networking:
+```
+docker run --network host --rm -it cc:latest cc_mqtt5_client_sub -v -t "#"
+```
+
+- Run applications that requires networking and GUI:
+```
+docker run --network host -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix --device /dev/dri --rm -it cc:latest cc_view
+```
+
+All applications configuration is available for download from the [DockerHub](https://hub.docker.com/r/commschamp/cc)
+
+```
+docker pull commschamp/cc:latest
+```
+
+See the [tags](https://hub.docker.com/r/commschamp/cc/tags) page for available tags to pull.
+
+## Code Generators Only Image
+
+```
+docker build --progress=plain \
+    --build-arg CONFIG=config/CodeGenerators.cmake \
+    --build-arg HAS_GUI_APPS=false \
+    --build-arg HAS_BOOST_APPS=false \
+    -t cc_gen -f docker/Dockerfile .
+```
+See also [script/docker_build_code_gens.sh](script/docker_build_code_gens.sh)
+
+
+## CommsChampion Tools Only Image
+
+```
+docker build --progress=plain \
+    --build-arg CONFIG=config/AllTools.cmake \
+    --build-arg HAS_BOOST_APPS=false \
+    --build-arg HAS_CODE_GENERATORS=false \
+    -t cc_tools -f docker/Dockerfile .
+```
+See also [script/docker_build_tools.sh](script/docker_build_tools.sh)
+
+## MQTT Applications Only Image
+
+```
+docker build --progress=plain \
+    --build-arg CONFIG=config/AllMqtt.cmake \
+    --build-arg HAS_GUI_APPS=false \
+    --build-arg HAS_CODE_GENERATORS=false \
+    -t cc_mqtt -f docker/Dockerfile .
+```
+
+# AppImage Support
+
+The provided [script/appimage_create.sh](script/appimage_create.sh) script can be used to create 
+an AppImage binary when the relevant configuration has already been built.
+```
+./script/appimage_create.sh /path/to/install /path/to/AppDir
+```
+Please open the script's code and note the requirement for the `~/bin/linuxdeploy-<arch>.AppImage` 
+(and `linuxdeploy-plugin-qt-<arch>.AppImage` alongside it when Qt based applications are included).
+The default path to the `linuxdeploy` can be changed using `LINUXDEPLOY` environment variable.
+```
+LINUXDEPLOY=/some/othe/path/to/linuxdeploy ./script/appimage_create.sh /path/to/install /path/to/AppDir
+```
+The provided [script/appimage_build.sh](script/appimage_build.sh) script can be used to 
+both build and create an AppImage binary.
+```
+./script/appimage_build.sh
+```
+Please open the script's code to see the environment variables that can be used to change the default
+configuration. Note an ability to select the build configuration using the `PROJ_INCLUDE` environment
+variable.
+
+The [AppRun](appimage/AppRun) script will be the entrypoint. The expected usage is similar to the 
+[docker](#docker-support) one
+```
+/path/to/cc-<arch>.AppImage <cmd> [<options>...]
+```
+
+When executed without providing `<cmd>` as an argument the script will list all the available commands. 
+Use `-h` option to get help for the selected command.
+```
+/path/to/cc-<arch>.AppImage cc_mqtt5_client_sub -h
+```
+
+The x86_64 `AppImage` binary containing all the [CommsChampion Ecosystem](https://commschamp.github.io/)
+applications can be downloaded from the relevant [release artefacts](https://github.com/commschamp/cc.cmake/releases).
