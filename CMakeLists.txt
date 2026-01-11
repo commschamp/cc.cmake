@@ -43,7 +43,7 @@ option (BUILD_SHARED_LIBS "Build as shared libraries (applicable to selected pro
 
 if ("${OPT_EXTERNALS_DIR}" STREQUAL "")
     set (OPT_EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
-endif ()    
+endif ()
 
 include(ExternalProject)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Funcs.cmake)
@@ -76,5 +76,5 @@ cc_add_project (cc.mqttsn_client_filter.cc_tools_plugin)
 
 if (WIN32 AND OPT_CC_TOOLS_QT)
     add_custom_target ("deploy_qt"
-        COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR}/cc_tools_qt --target deploy_qt)    
+        COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR}/cc_tools_qt --target deploy_qt)
 endif ()

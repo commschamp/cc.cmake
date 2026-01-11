@@ -23,7 +23,7 @@ WORKDIR /cc/build
 # Build the target
 RUN cmake .. -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_INCLUDE=${CONFIG}
 
-RUN cmake --build /cc/build --parallel $(nproc) 
+RUN cmake --build /cc/build --parallel $(nproc)
 
 RUN rm -rf /cc/build/install/include /cc/build/install/bin/*.sh /cc/build/install/lib/*.a
 
@@ -37,7 +37,7 @@ ARG HAS_BOOST_APPS=true
 ARG HAS_CODE_GENERATORS=true
 
 # Install packages
-RUN apt update 
+RUN apt update
 RUN if [ "${HAS_GUI_APPS}" = "true" ]; then apt install -y libqt5gui5 libqt5widgets5 libqt5serialport5 qt5dxcb-plugin; fi
 RUN if [ "${HAS_BOOST_APPS}" = "true" ]; then apt install -y libssl3 libboost-program-options1.74.0 libboost-system1.74.0; fi
 RUN if [ "${HAS_CODE_GENERATORS}" = "true" ]; then apt install -y libxml2; fi

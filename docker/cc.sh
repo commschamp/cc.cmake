@@ -8,7 +8,7 @@ function usage {
         cmd=$(basename ${f})
         echo "    ${cmd}"
     done
-    echo 
+    echo
     echo "Use \"${0} <cmd> -h\" to inquire about command options"
 }
 

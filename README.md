@@ -107,21 +107,21 @@ cmake -DCMAKE_POLICY_DEFAULT_CMP0167=NEW -DCMAKE_PREFIX_PATH=/path/to/boost/cmak
 
 The provided [Dockerfile](docker/Dockerfile) can be used to build any configuration. When no extra build arguments
 are provided all [CommsChampion Ecosystem](https://commschamp.github.io/) applications will end up
-in the final image. 
+in the final image.
 
-All the artifacts will reside in the `/cc` directory (the binary executables will be in `/cc/bin`) and the 
+All the artifacts will reside in the `/cc` directory (the binary executables will be in `/cc/bin`) and the
 [cc.sh](docker/cc.sh) script will be a default entrypoint. There is a user defined and all the applications
 are executed with the selected user permissions. The expected usage of the entrypoint is:
 ```
 /cc.sh <cmd> <cmd_options...>
-``` 
+```
 The `<cmd>` is the name of the binary from the `/cc/bin`. When no arguments are provided then the script
 will list all the available commands. Every binary in the `/cc/bin` is expected to have `-h` command line
 options for help.
 
 Below are the build configuration arguments, default value of which that can be changed with `--build-arg`.
 
-- **CONFIG** (=config/AllDocker.cmake) - Path to the configuration to be used with the 
+- **CONFIG** (=config/AllDocker.cmake) - Path to the configuration to be used with the
   [CMAKE_PROJECT_INCLUDE](https://cmake.org/cmake/help/latest/variable/CMAKE_PROJECT_INCLUDE.html) cmake parameter.
 - **HAS_GUI_APPS** (=true) - Flag to install relevant Qt libraries for the GUI applications.
 - **HAS_BOOST_APPS** (=true) - Flag to install relevant Boost libraries for command line applications.
@@ -192,18 +192,18 @@ docker build --progress=plain \
 
 # AppImage Support
 
-The provided [script/appimage_create.sh](script/appimage_create.sh) script can be used to create 
+The provided [script/appimage_create.sh](script/appimage_create.sh) script can be used to create
 an AppImage binary when the relevant configuration has already been built.
 ```
 ./script/appimage_create.sh /path/to/install /path/to/AppDir
 ```
-Please open the script's code and note the requirement for the `~/bin/linuxdeploy-<arch>.AppImage` 
+Please open the script's code and note the requirement for the `~/bin/linuxdeploy-<arch>.AppImage`
 (and `linuxdeploy-plugin-qt-<arch>.AppImage` alongside it when Qt based applications are included).
 The default path to the `linuxdeploy` can be changed using `LINUXDEPLOY` environment variable.
 ```
 LINUXDEPLOY=/some/othe/path/to/linuxdeploy ./script/appimage_create.sh /path/to/install /path/to/AppDir
 ```
-The provided [script/appimage_build.sh](script/appimage_build.sh) script can be used to 
+The provided [script/appimage_build.sh](script/appimage_build.sh) script can be used to
 both build and create an AppImage binary.
 ```
 ./script/appimage_build.sh
@@ -212,13 +212,13 @@ Please open the script's code to see the environment variables that can be used 
 configuration. Note an ability to select the build configuration using the `PROJ_INCLUDE` environment
 variable.
 
-The [AppRun](appimage/AppRun) script will be the entrypoint. The expected usage is similar to the 
+The [AppRun](appimage/AppRun) script will be the entrypoint. The expected usage is similar to the
 [docker](#docker-support) one
 ```
 /path/to/cc-<arch>.AppImage <cmd> [<options>...]
 ```
 
-When executed without providing `<cmd>` as an argument the script will list all the available commands. 
+When executed without providing `<cmd>` as an argument the script will list all the available commands.
 Use `-h` option to get help for the selected command.
 ```
 /path/to/cc-<arch>.AppImage cc_mqtt5_client_sub -h

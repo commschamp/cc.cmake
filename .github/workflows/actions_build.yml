@@ -10,8 +10,8 @@ on:
 env:
   CC_CMAKE_CONFIG: config/All.cmake
   WIN_BOOST_VERSION: "1.87.0"
-  WIN_BOOST_DIR: "C:/local/boost_1_87_0"  
-  WIN_OPENSSL_VERSION: "3.6.0"    
+  WIN_BOOST_DIR: "C:/local/boost_1_87_0"
+  WIN_OPENSSL_VERSION: "3.6.0"
 
 jobs:
   build_gcc_ubuntu_24_04:
@@ -25,29 +25,29 @@ jobs:
         qt_ver: [5, 6]
         exclude:
           - cc_ver: 9
-            cpp: 23    
+            cpp: 23
           - cc_ver: 10
-            cpp: 23   
+            cpp: 23
           - cc_ver: 11
-            cpp: 23   
+            cpp: 23
           - cc_ver: 12
-            cpp: 23                             
+            cpp: 23
           - cc_ver: 13
-            cpp: 23         
+            cpp: 23
           - cc_ver: 13
-            cpp: 23  
+            cpp: 23
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Prepare Install
-      run: sudo apt-get update --fix-missing    
-      
+      run: sudo apt-get update --fix-missing
+
     - name: Install Packages
       run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build      
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
       shell: bash
@@ -59,13 +59,13 @@ jobs:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
 
-    - name: Build Target 
+    - name: Build Target
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --config ${{matrix.type}}
       env:
-        VERBOSE: 1 
-      
+        VERBOSE: 1
+
   build_clang_ubuntu_22_04:
     runs-on: ubuntu-22.04
     strategy:
@@ -80,13 +80,13 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Prepare Install
-      run: sudo apt-get update --fix-missing    
-      
+      run: sudo apt-get update --fix-missing
+
     - name: Install Packages
       run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev clang-${{matrix.cc_ver}}
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build      
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
       shell: bash
@@ -98,12 +98,12 @@ jobs:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
 
-    - name: Build Target 
+    - name: Build Target
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --config ${{matrix.type}}
       env:
-        VERBOSE: 1 
+        VERBOSE: 1
 
   build_clang_ubuntu_24_04:
     runs-on: ubuntu-24.04
@@ -116,29 +116,29 @@ jobs:
         qt_ver: [5, 6]
         exclude:
           - cc_ver: 14
-            cpp: 20  
+            cpp: 20
           - cc_ver: 14
-            cpp: 23   
+            cpp: 23
           - cc_ver: 15
-            cpp: 20              
+            cpp: 20
           - cc_ver: 15
-            cpp: 23         
+            cpp: 23
           - cc_ver: 16
             cpp: 23
           - cc_ver: 17
-            cpp: 23     
+            cpp: 23
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Prepare Install
-      run: sudo apt-get update --fix-missing    
-      
+      run: sudo apt-get update --fix-missing
+
     - name: Install Packages
       run: sudo apt install libboost-all-dev qtbase5-dev qt6-base-dev libqt${{matrix.qt_ver}}serialport${{matrix.qt_ver}}-dev libssl-dev clang-${{matrix.cc_ver}}
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build      
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
       shell: bash
@@ -150,13 +150,13 @@ jobs:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
 
-    - name: Build Target 
+    - name: Build Target
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --config ${{matrix.type}}
       env:
-        VERBOSE: 1 
-    
+        VERBOSE: 1
+
   build_msvc_2022:
     runs-on: windows-2022
     strategy:
@@ -171,19 +171,19 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build   
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Install Boost
       shell: cmd
       run: |
-        choco install boost-msvc-14.3 --version=${{env.WIN_BOOST_VERSION}}      
-        echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.3/cmake >>%GITHUB_ENV%    
+        choco install boost-msvc-14.3 --version=${{env.WIN_BOOST_VERSION}}
+        echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.3/cmake >>%GITHUB_ENV%
 
     - name: Install OpenSSL
       if: matrix.arch == 'x64'
       shell: cmd
       run: |
-        choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}              
+        choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}
 
     - name: Install Curl
       shell: cmd
@@ -210,14 +210,13 @@ jobs:
       env:
         QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
 
-    - name: Build Target 
+    - name: Build Target
       working-directory: ${{runner.workspace}}/build
       shell: cmd
       run: cmake --build . --config ${{matrix.type}}
       env:
-        VERBOSE: 1 
+        VERBOSE: 1
 
-    
   build_msvc_2025:
     runs-on: windows-2025
     strategy:
@@ -232,19 +231,19 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build   
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Install Boost
       shell: cmd
       run: |
-        choco install boost-msvc-14.3 --version=${{env.WIN_BOOST_VERSION}}      
-        echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.3/cmake >>%GITHUB_ENV%    
+        choco install boost-msvc-14.3 --version=${{env.WIN_BOOST_VERSION}}
+        echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.3/cmake >>%GITHUB_ENV%
 
     - name: Install OpenSSL
       if: matrix.arch == 'x64'
       shell: cmd
       run: |
-        choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}              
+        choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}
 
     - name: Install Curl
       shell: cmd
@@ -271,9 +270,9 @@ jobs:
       env:
         QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
 
-    - name: Build Target 
+    - name: Build Target
       working-directory: ${{runner.workspace}}/build
       shell: cmd
       run: cmake --build . --config ${{matrix.type}}
       env:
-        VERBOSE: 1 
+        VERBOSE: 1

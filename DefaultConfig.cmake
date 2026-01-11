@@ -120,13 +120,13 @@ set (boost_params)
 
 macro (add_boost_param name)
     if (DEFINED ${name})
-        list (APPEND boost_params -D${name}=${${name}}) 
+        list (APPEND boost_params -D${name}=${${name}})
     endif ()
 endmacro ()
 
 if (OPT_ALLOW_BOOST)
     find_package (Boost QUIET)
-    
+
     if (TARGET Boost::boost)
         set (boost_enabled ON)
         add_boost_param(BOOST_ROOT)
@@ -159,7 +159,7 @@ set (openssl_enabled OFF)
 
 if (OPT_ALLOW_OPENSSL)
     find_package (OpenSSL QUIET)
-    
+
     if (TARGET OpenSSL::SSL)
         set (openssl_enabled ON)
     endif ()

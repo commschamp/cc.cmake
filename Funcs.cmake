@@ -12,27 +12,27 @@ function (cc_add_project name)
     set (git_repo_var "${cap_name}_GIT_REPOSITORY")
     if ("${${git_repo_var}}" STREQUAL "")
         set (${git_repo_var} "https://github.com/commschamp/${name}.git")
-    endif ()  
+    endif ()
 
     if (NOT "${${git_repo_var}}" STREQUAL "_")
         set (git_repo_param GIT_REPOSITORY ${${git_repo_var}})
-    endif () 
+    endif ()
 
     set (git_tag_param)
     set (git_tag_var "${cap_name}_GIT_TAG")
     if ("${${git_tag_var}}" STREQUAL "")
         set (${git_tag_var} "${${cap_name}_DEFAULT_TAG}")
-    endif ()    
+    endif ()
 
     if (NOT "${git_repo_param}" STREQUAL "")
         set (git_tag_param GIT_TAG ${${git_tag_var}})
-    endif ()   
+    endif ()
 
     set (dep_param)
     set (dep_var "${cap_name}_DEPENDS")
     if (NOT "${${dep_var}}" STREQUAL "")
         set (dep_param DEPENDS ${${dep_var}})
-    endif ()  
+    endif ()
 
     set (exclude_from_all TRUE)
     set (opt_var "OPT_${cap_name}")
@@ -61,10 +61,10 @@ function (cc_add_project name)
             -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
             ${${cap_name}_DEFAULT_CMAKE_ARGS}
             ${${cap_name}_CMAKE_ARGS}
-        LIST_SEPARATOR |             
+        LIST_SEPARATOR |
         ${dep_param}
         EXCLUDE_FROM_ALL ${exclude_from_all}
-    )      
+    )
 
 endfunction ()
 
