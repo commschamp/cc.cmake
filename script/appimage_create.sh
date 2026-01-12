@@ -56,5 +56,3 @@ set -x
 export LD_LIBRARY_PATH=${CC_DIR}/lib:${LD_LIBRARY_PATH}
 ${LINUXDEPLOY} --appdir ${APPDIR_DIR} ${PARAMS} -d ${APPIMAGE_DIR}/cc.desktop -i ${APPIMAGE_DIR}/app_icon.png --output appimage
 
-
-

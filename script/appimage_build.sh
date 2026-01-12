@@ -15,11 +15,11 @@ if [ -z "${CXX}" ]; then
 fi
 
 if [ -z "${BUILD_TYPE}" ]; then
-    export BUILD_TYPE="Release"    
+    export BUILD_TYPE="Release"
 fi
 
 if [ -z "${BUILD_DIR}" ]; then
-    export BUILD_DIR="${ROOT_DIR}/build.appimage.${CC}.${BUILD_TYPE}"    
+    export BUILD_DIR="${ROOT_DIR}/build.appimage.${CC}.${BUILD_TYPE}"
 fi
 
 export DEFAULT_SANITIZERS=OFF

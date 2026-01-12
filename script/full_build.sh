@@ -50,4 +50,4 @@ if [ -n "${procs}" ]; then
     procs_param="--parallel ${procs}"
 fi
 
-cmake --build ${BUILD_DIR} --config ${BUILD_TYPE} ${procs_param}    
+cmake --build ${BUILD_DIR} --config ${BUILD_TYPE} ${procs_param}
