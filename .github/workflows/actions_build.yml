@@ -11,7 +11,7 @@ env:
   CC_CMAKE_CONFIG: config/All.cmake
   WIN_BOOST_VERSION: "1.87.0"
   WIN_BOOST_DIR: "C:/local/boost_1_87_0"
-  WIN_OPENSSL_VERSION: "3.6.0"
+  WIN_OPENSSL_VERSION: "4.0.1"
 
 jobs:
   build_gcc_ubuntu_24_04:
@@ -111,7 +111,7 @@ jobs:
       fail-fast: false
       matrix:
         type: [Debug, Release, MinSizeRel]
-        cc_ver: [14, 15, 16, 17, 18]
+        cc_ver: [14, 15, 16, 17, 18, 19]
         cpp: [17, 20, 23]
         qt_ver: [5, 6]
         exclude:
@@ -185,30 +185,21 @@ jobs:
       run: |
         choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}
 
-    - name: Install Curl
-      shell: cmd
-      run: |
-        choco install curl
-
-    - name: Install Qt
-      shell: cmd
-      run: |
-        curl -L https://github.com/martinrotter/qt-minimalistic-builds/releases/download/${{env.QT_VER}}/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64.7z -o ${{runner.workspace}}/qt.7z
-        7z x ${{runner.workspace}}/qt.7z -o${{runner.workspace}}/qt
-      env:
-        QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
+    - name: Install Qt (sets QT_ROOT_DIR)
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ matrix.qt_ver == 5 && '5.15.*' || '6.8.*' }}
+        cache: true
 
     - name: Configure CMake
       shell: cmd
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
-          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64;%BOOST_DIR%" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
+          -DCMAKE_PREFIX_PATH="%QT_ROOT_DIR%;%BOOST_DIR%" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
           -DCMAKE_POLICY_DEFAULT_CMP0167=NEW ^
           -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}} ^
           -DOPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN=OFF
-      env:
-        QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
 
     - name: Build Target
       working-directory: ${{runner.workspace}}/build
@@ -217,7 +208,7 @@ jobs:
       env:
         VERBOSE: 1
 
-  build_msvc_2025:
+  build_msvc_2026:
     runs-on: windows-2025
     strategy:
       fail-fast: false
@@ -226,6 +217,11 @@ jobs:
         arch: [x64]
         cpp: [17, 20, 23]
         qt_ver: [5, 6]
+        exclude:
+          - cpp: 20
+            qt_ver: 5
+          - cpp: 23
+            qt_ver: 5
 
     steps:
     - uses: actions/checkout@v4
@@ -245,30 +241,21 @@ jobs:
       run: |
         choco install openssl --version=${{env.WIN_OPENSSL_VERSION}}
 
-    - name: Install Curl
-      shell: cmd
-      run: |
-        choco install curl
-
-    - name: Install Qt
-      shell: cmd
-      run: |
-        curl -L https://github.com/martinrotter/qt-minimalistic-builds/releases/download/${{env.QT_VER}}/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64.7z -o ${{runner.workspace}}/qt.7z
-        7z x ${{runner.workspace}}/qt.7z -o${{runner.workspace}}/qt
-      env:
-        QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
+    - name: Install Qt (sets QT_ROOT_DIR)
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ matrix.qt_ver == 5 && '5.15.*' || '6.8.*' }}
+        cache: true
 
     - name: Configure CMake
       shell: cmd
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
-          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64;%BOOST_DIR%" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
+          -DCMAKE_PREFIX_PATH="%QT_ROOT_DIR%;%BOOST_DIR%" -DCMAKE_CXX_STANDARD=${{matrix.cpp}} ^
           -DCMAKE_POLICY_DEFAULT_CMP0167=NEW ^
           -DCMAKE_PROJECT_INCLUDE=${{env.CC_CMAKE_CONFIG}} -DOPT_QT_MAJOR_VERSION=${{matrix.qt_ver}} ^
           -DOPT_CC_UBLOX_PROTOCOL_CC_TOOLS_PLUGIN=OFF
-      env:
-        QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}
 
     - name: Build Target
       working-directory: ${{runner.workspace}}/build
