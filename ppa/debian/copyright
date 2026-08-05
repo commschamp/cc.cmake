@@ -1,0 +1,13 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: https://github.com/commschamp/cc.cmake
+Upstream-Name: cc.cmake
+Upstream-Contact: Alex Robenko <arobenko@gmail.com>
+
+Files: *
+Copyright:
+ 2013-2026 Alex Robenko <arobenko@gmail.com>
+License: MPL-2.0
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this
+ file, You can obtain one at http://mozilla.org/MPL/2.0/.
+

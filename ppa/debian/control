@@ -1,0 +1,45 @@
+Source: cc.cmake
+Section: devel
+Priority: optional
+Maintainer: Alex Robenko <arobenko@gmail.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ ca-certificates,
+ cmake,
+ git
+Standards-Version: 4.6.2
+Homepage: https://commschamp.github.io/
+Vcs-Browser: https://github.com/commschamp/cc.cmake
+Vcs-Git: https://github.com/commschamp/cc.cmake.git
+
+Package: cc-comms-dev
+Architecture: all
+Depends:
+ ${misc:Depends},
+Description: CommsChampion Ecosystem COMMS C++ library
+ Headers only C++ library to help implement binary communication protocol.
+
+Package: cc-mqtt5-dev
+Architecture: all
+Depends:
+ cc-comms-dev,
+ ${misc:Depends}
+Description: CommsChampion Ecosystem MQTT v5 protocol C++ library
+ Header-only C++ MQTT v5 protocol library.
+
+Package: cc-mqtt311-dev
+Architecture: all
+Depends:
+ cc-comms-dev,
+ ${misc:Depends}
+Description: CommsChampion Ecosystem MQTT v3.1.1 protocol C++ library
+ Header-only C++ MQTT v3.1.1 protocol library.
+
+Package: cc-mqttsn-dev
+Architecture: all
+Depends:
+ cc-comms-dev,
+ ${misc:Depends}
+Description: CommsChampion Ecosystem MQTT-SN v1.2 protocol C++ library
+ Header-only C++ MQTT-SN v1.2 protocol library.
