@@ -1,7 +1,7 @@
 Source: cc.cmake
 Section: devel
 Priority: optional
-Maintainer: Alex Robenko <arobenko@gmail.com>
+Maintainer: @MAINTAINER@
 Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
@@ -10,8 +10,10 @@ Build-Depends:
  git,
  libboost-program-options-dev,
  libboost-system-dev,
+ libssl-dev,
  libxml2-dev,
- libssl-dev
+ qt6-base-dev,
+ qt6-serialport-dev
 Standards-Version: 4.6.2
 Homepage: https://commschamp.github.io/
 Vcs-Browser: https://github.com/commschamp/cc.cmake
@@ -85,9 +87,10 @@ Architecture: any
 Depends:
  ${misc:Depends}
 Description: CommsChampion Ecosystem MQTT v5 client library development files
- Development files for the C++ library implementing providing simple and asynchronous interface to implement MQTT v5 client.
+ Development files for the C++ library implementing providing simple and 
+ asynchronous interface to implement MQTT v5 client.
 
-Package: cc-mqtt5-client-apps
+Package: cc-mqtt5-client-bin
 Architecture: any
 Depends:
  ${shlibs:Depends},
@@ -100,9 +103,10 @@ Architecture: any
 Depends:
  ${misc:Depends}
 Description: CommsChampion Ecosystem MQTT v3.1.1 client library development files
- Development files for the C++ library implementing providing simple and asynchronous interface to implement MQTT v3.1.1 client.
+ Development files for the C++ library implementing providing simple and 
+ asynchronous interface to implement MQTT v3.1.1 client.
 
-Package: cc-mqtt311-client-apps
+Package: cc-mqtt311-client-bin
 Architecture: any
 Depends:
  ${shlibs:Depends},
@@ -115,9 +119,10 @@ Architecture: any
 Depends:
  ${misc:Depends}
 Description: CommsChampion Ecosystem MQTT-SN client library development files
- Development files for the C++ library implementing providing simple and asynchronous interface to implement MQTT-SN client.
+ Development files for the C++ library implementing providing simple and 
+ asynchronous interface to implement MQTT-SN client.
 
-Package: cc-mqttsn-client-apps
+Package: cc-mqttsn-client-bin
 Architecture: any
 Depends:
  ${shlibs:Depends},
@@ -130,12 +135,46 @@ Architecture: any
 Depends:
  ${misc:Depends}
 Description: CommsChampion Ecosystem MQTT-SN gateway library development files
- Development files for the C++ library implementing providing simple and asynchronous interface to implement MQTT-SN gateway.
+ Development files for the C++ library implementing providing simple and 
+ asynchronous interface to implement MQTT-SN gateway.
 
-Package: cc-mqttsn-gateway-apps
+Package: cc-mqttsn-gateway-bin
 Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends}
 Description: CommsChampion Ecosystem MQTT-SN gateway application
  MQTT-SN gateway application.
+
+Package: cc-tools-qt-lib
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: CommsChampion Ecosystem tools library
+ Library for developing plugins for CommsChampion Tools. 
+
+Package: cc-tools-qt-dev
+Architecture: any
+Depends:
+ cc-tools-qt-lib,
+ ${misc:Depends}
+Description: CommsChampion Ecosystem tools development files
+ Development files for developing plugins for CommsChampion Tools.
+
+Package: cc-tools-qt-plugins
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: CommsChampion Ecosystem Tools plugins
+ Plugins for the CommsChampion Ecosystem tools. 
+
+Package: cc-tools-qt-bin
+Architecture: any
+Depends:
+ cc-tools-qt-plugins,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: CommsChampion Ecosystem Tools
+ Tools for visual protocol debugging and analysis.

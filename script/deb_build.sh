@@ -4,6 +4,7 @@ ROOT_DIR=$( dirname ${SCRIPT_DIR} )
 
 # Configuration variables
 PROJ_INCLUDE_NAME=${PROJ_INCLUDE_NAME:-config/UbuntuPpa.cmake}
+JOBS=${JOBS:-$(nproc)}
 # DISTROS - Use colon separation, such as `export DISTROS="noble:resolute`
 
 set -e
@@ -14,6 +15,7 @@ BUILD_DATE=$(date -R)
 
 pushd ${ROOT_DIR}
 VERSION=$(git describe --tags --abbrev=0)
+AUTHOR=$(git log -1 --format="%an <%ae>" "$VERSION")
 popd
 
 rm -rf ${BUILD_DIR}
@@ -25,6 +27,7 @@ cp -r ${ROOT_DIR}/ppa/debian ${SRC_DIR}
 sed -i "s|^CONFIG_FILE :=.*|CONFIG_FILE := ${PROJ_INCLUDE_NAME}|" ${SRC_DIR}/debian/rules
 sed -i "s|@VERSION@|${VERSION}|" ${SRC_DIR}/debian/changelog
 sed -i "s|@DATE@|${BUILD_DATE}|" ${SRC_DIR}/debian/changelog
+sed -i "s|@MAINTAINER@|${AUTHOR}|" ${SRC_DIR}/debian/control
 
 CHANGElOG_FILE=${SRC_DIR}/debian/changelog
 FULL_VERSION=$(dpkg-parsechangelog -l ${CHANGElOG_FILE} -S Version)
@@ -52,6 +55,7 @@ for d in ${DISTROS[@]}; do
     sed -i "1s/UNRELEASED/${d}/" debian/changelog
     sed -i "1s/\(~ppa[0-9]*\)/\1~${d}/" debian/changelog
     dpkg-buildpackage -S -sa -us -uc
-    sbuild -c ${d}-amd64-sbuild -d ${d} ../${SRC_NAME}_${FULL_VERSION}~${d}.dsc
+    sbuild -c ${d}-amd64-sbuild -d ${d} -j${JOBS} ../${SRC_NAME}_${FULL_VERSION}~${d}.dsc
+    tar -czvf ${BUILD_DIR}/cc-debs-${d}_${SRC_VERSION}.tar.gz *.deb
     popd
 done
