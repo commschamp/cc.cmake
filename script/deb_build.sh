@@ -1,6 +1,4 @@
 #!/bin/bash
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT_DIR=$( dirname ${SCRIPT_DIR} )
 
 # Configuration variables
 PROJ_INCLUDE_NAME=${PROJ_INCLUDE_NAME:-config/UbuntuPpa.cmake}
@@ -9,6 +7,8 @@ JOBS=${JOBS:-$(nproc)}
 
 set -e
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_DIR=$( dirname ${SCRIPT_DIR} )
 BUILD_DIR=${ROOT_DIR}/build.deb
 SRC_DIR=${BUILD_DIR}/src
 BUILD_DATE=$(date -R)
