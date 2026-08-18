@@ -12,4 +12,4 @@ Please read the relevant documentation page:
 
 - [Docket Support](doc/Docker.md)
 - [AppImage Support](doc/AppImage.md)
-- [Ubuntu PPA Support](doc/PPA.md)
+- [Ubuntu/Debian Packages Support](doc/DebPack.md)

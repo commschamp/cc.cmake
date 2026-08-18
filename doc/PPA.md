@@ -1,3 +1,0 @@
-# Ubuntu PPA Support
-
-TODO

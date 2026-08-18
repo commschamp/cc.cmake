@@ -32,6 +32,7 @@ cat > "${APTLY_CONFIG}" <<EOF
 EOF
 
 rm -rf ${APTLY_DIR}
+rm -rf ${BUILD_DIR}/publish
 aptly -config="${APTLY_CONFIG}" repo create cc
 
 SIGN_PARAM=
