@@ -1,6 +1,6 @@
 # Overview
 This repository bundles all the [CommsChampion Ecosystem](https://commschamp.github.io/) projects
-into a single CMake one. It is expected to be built a stand-alone CMake project or in another CMake one that has some
+into a single CMake one. It is expected to be built as a stand-alone CMake project or in another CMake one that has some
 [CommsChampion Ecosystem](https://commschamp.github.io/) dependencies and built using
 the [ExternalProject_Add()](https://cmake.org/cmake/help/v3.15/module/ExternalProject.html) cmake
 function with an appropriate configuration.
