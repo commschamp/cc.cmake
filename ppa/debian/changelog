@@ -1,0 +1,5 @@
+cc.cmake (@VERSION@-1~ppa1) UNRELEASED; urgency=medium
+
+  * Automated build.
+
+ -- Alex Robenko <arobenko@gmail.com>  @DATE@

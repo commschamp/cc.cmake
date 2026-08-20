@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+STAGING_DIR := $(CURDIR)/install
+CONFIG_FILE := config/UbuntuPpa.cmake
+
+%:
+	dh $@ --buildsystem=cmake
+
+override_dh_auto_configure:
+	rm -rf $(STAGING_DIR)
+	dh_auto_configure -- \
+		-DCMAKE_PROJECT_INCLUDE=$(CONFIG_FILE) \
+		-DCMAKE_INSTALL_PREFIX=$(STAGING_DIR)/usr
+
+override_dh_auto_build:
+	dh_auto_build
+	mv $(STAGING_DIR)/usr/etc $(STAGING_DIR)/
+
+override_dh_install:
+	dh_install --sourcedir=${STAGING_DIR}
