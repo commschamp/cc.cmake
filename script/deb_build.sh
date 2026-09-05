@@ -40,7 +40,7 @@ tar -cvzf ${BUILD_DIR}/${UPSTREAM_ARCHIVE_NAME} ./*
 popd
 
 if [ -z "${DISTROS:-}" ]; then
-    DISTROS=("noble")
+    DISTROS=("noble" "resolute")
 else
     IFS=: read -ra DISTROS <<< "${DISTROS}"
 fi
