@@ -14,7 +14,7 @@ APTLY_CONFIG="${BUILD_DIR}/aptly.conf"
 APTLY_DIR="${BUILD_DIR}/aptly"
 
 if [ -z "${DISTROS:-}" ]; then
-    DISTROS=("noble")
+    DISTROS=("noble" "resolute")
 else
     IFS=: read -ra DISTROS <<< "${DISTROS}"
 fi
